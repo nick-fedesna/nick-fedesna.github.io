@@ -22,16 +22,14 @@
     <!-- Code syntax highlighting -->
     <link rel="stylesheet" href="lib/css/zenburn.css">
 
-    <!-- Printing and PDF exports -->
+    <!-- Printing and PDF exports -->  <!--// @formatter:off-->
     <script>
-			var link = document.createElement( 'link' );
-			link.rel = 'stylesheet';
-			link.type = 'text/css';
-			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
-			document.getElementsByTagName( 'head' )[0].appendChild( link );
-
-
-    </script>
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>   <!--// @formatter:on-->
 
     <!--[if lt IE 9]>
     <script src="lib/js/html5shiv.js"></script>
@@ -41,51 +39,62 @@
 <body>
 
 <div class="reveal">
-
-    <!-- Any section element inside of this container is displayed as a slide -->
     <div class="slides">
+
         <section>
             <h1 class="notransform">RxAndroid</h1>
 
             <h3>ReactiveX for Android</h3>
 
             <p>
-                <small>Created by <a href="http://gihub.com/nick-fedesna">Nick Fedesna</a> / <a
-                        href="http://twitter.com/findapollo">@findapollo</a></small>
+                <small>Created by <a href="http://gihub.com/nick-fedesna">Nick Fedesna</a></small>
             </p>
         </section>
-        <section>
-            <h2>Reactive Programming</h2>
 
-            <p>
-                Offers efficient execution and composition<br/>by providing a collection of operators capable of <br/>filtering,
-                selecting, transforming and composing observables.
-            </p>
+        <section>
+            <section>
+                <h2>Nested Callbacks</h2>
+                <pre>
+                    <!--// @formatter:off-->
+                    <code class="stretch">
+sApi.loginUser(user).enqueue(new Callback&lt;UserToken&gt;() {
+    @Override public void onResponse(Response&lt;UserToken&gt; response) {
+        sApi.getUserInfo(response.body().token).enqueue(new Callback&lt;User&gt;() {
+            @Override public void onResponse(Response&lt;User&gt; response) {
+                // do something with User
+            }
+
+            @Override public void onFailure(Throwable t) {
+                // notify error getting User
+            }
+        });
+    }
+
+    @Override public void onFailure(Throwable t) {
+        // notify login failure
+    }
+});
+                    </code>
+                    <!--// @formatter:on-->
+                </pre>
+            </section>
         </section>
-        <!-- Example of nested vertical slides -->
+
+        <section data-background="img/rube.gif">
+            <div class="transparent-background" style="padding:20px">
+                <h2 class="white">Reactive Programming</h2>
+
+                <p class="white">
+                    Offers efficient execution and composition<br/>
+                    by providing a collection of operators capable of <br/>
+                    filtering, selecting, transforming and combining observables.
+                </p>
+            </div>
+        </section>
+
         <section>
             <section data-background="img/llama.jpg">
-                <h1 class="white">Wait, what's an <em>Observable</em>&nbsp ??</h1>
-            </section>
-
-            <section>
-                <h2>Pretty Code</h2>
-						<pre><code data-trim contenteditable>
-                            function linkify( selector ) {
-                            if( supports3DTransforms ) {
-
-                            var nodes = document.querySelectorAll( selector );
-
-                            for( var i = 0, len = nodes.length; i &lt; len; i++ ) {
-                            var node = nodes[i];
-
-                            if( !node.className ) {
-                            node.className += ' roll';
-                            }
-                            }
-                            }
-                            }
-                        </code></pre>
+                <h1 class="white">Wait, what's an <br><em>Observable</em>&nbsp ??</h1>
             </section>
 
             <section>
@@ -135,64 +144,46 @@
             </section>
         </section>
 
-        <section class="operators">
-            <h2>Operators</h2>
-            <dl>
-                <dt>Creating</dt>
-                <dd>
-                    <code>Create</code>, <code>Defer</code>, <code>Empty</code>/<code>Never</code>/<code>Throw</code>,
-                    <code>From</code>, <code>Interval</code>, <code>Just</code>, <code>Range</code>, <code>Repeat</code>,
-                    <code>Start</code>, <code>Timer</code>
-                </dd>
-                <dt>Transforming Items</dt>
-                <dd>
-                    <code>Buffer</code>, <code>FlatMap</code>, <code>GroupBy</code>, <code>Map</code>, <code>Scan</code>,
-                    and
-                    <code>Window</code>
-                </dd>
-                <dt>Filtering</dt>
-                <dd>
-                    <code>Debounce</code>, <code>Distinct</code>, <code>ElementAt</code>, <code>Filter</code>,
-                    <code>First</code>, <code>IgnoreElements</code>, <code>Last</code>, <code>Sample</code>,
-                    <code>Skip</code>, <code>SkipLast</code>, <code>Take</code>, <code>TakeLast</code>
-                </dd>
-                <dt>Combining</dt>
-                <dd>
-                    <code>And</code>/<code>Then</code>/<code>When</code>, <code>CombineLatest</code>, <code>Join</code>,
-                    <code>Merge</code>, <code>StartWith</code>, <code>Switch</code>, <code>Zip</code>
-                </dd>
-                <dt>Error Handling Operators</dt>
-                <dd>
-                    <code>Catch</code> and <code>Retry</code>
-                </dd>
-                <dt>Utility</dt>
-                <dd>
-                    <code>Delay</code>, <code>Do</code>, <code>Materialize</code>/<code>Dematerialize</code>,
-                    <code>ObserveOn</code>, <code>Serialize</code>, <code>Subscribe</code>, <code>SubscribeOn</code>,
-                    <code>TimeInterval</code>, <code>Timeout</code>, <code>Timestamp</code>, <code>Using</code>
-                </dd>
-                <dt>Conditional and Boolean</dt>
-                <dd>
-                    <code>All</code>, <code>Amb</code>, <code>Contains</code>, <code>DefaultIfEmpty</code>,
-                    <code>SequenceEqual</code>, <code>SkipUntil</code>, <code>SkipWhile</code>, <code>TakeUntil</code>,
-                    and <code>TakeWhile</code>
-                </dd>
-                <dt>Mathematical and Aggregate</dt>
-                <dd>
-                    <code>Average</code>, <code>Concat</code>, <code>Count</code>, <code>Max</code>, <code>Min</code>,
-                    <code>Reduce</code>, <code>Sum</code>
-                </dd>
-                <dt>Converting Observables</dt>
-                <dd>
-                    <code>To</code>
-                </dd>
-                <dt>Connecting</dt>
-                <dd>
-                    <code>Connect</code>, <code>Publish</code>, <code>RefCount</code>, <code>Replay</code>
-                </dd>
-                <dt>Backpressure Operators</dt>
-                <dd>a variety of operators that enforce particular flow-control policies</dd>
-            </dl>
+        <section>
+            <h3>A Few Operators</h3>
+
+            <span class="operators">
+                <strong>Transforming Items</strong>
+                <code>Buffer</code>, <code>FlatMap</code>, <code>GroupBy</code>, <code>Map</code>, <code>Scan</code>,
+                <code>Window</code>
+            </span>
+
+            <span class="operators">
+                <strong>Filtering</strong>
+                <code>Debounce</code>, <code>Distinct</code>, <code>Filter</code>,
+                <code>First</code>, <code>IgnoreElements</code>, <code>Last</code>, <code>Sample</code>,
+                <code>Skip</code>, <code>SkipLast</code>, <code>Take</code>
+            </span>
+
+            <span class="operators">
+                <strong>Combining</strong>
+                <code>And/Then/When</code>, <code>CombineLatest</code>, <code>Join</code>,
+                <code>Merge</code>, <code>StartWith</code>, <code>Switch</code>, <code>Zip</code>
+            </span>
+
+            <span class="operators">
+                <strong>Conditional and Boolean</strong>
+                <code>All</code>, <code>Amb</code>, <code>Contains</code>, <code>DefaultIfEmpty</code>,
+                <code>SkipUntil</code>, <code>TakeWhile</code>
+            </span>
+
+            <span class="operators">
+                <strong>Mathematical and Aggregate</strong>
+                <code>Average</code>, <code>Concat</code>, <code>Count</code>, <code>Max</code>, <code>Min</code>,
+                <code>Reduce</code>, <code>Sum</code>
+            </span>
+
+            <span class="operators">
+                <strong>Utility</strong>
+                <code>Delay</code>, <code>Do</code>, <code>Materialize</code>, <code>SubscribeOn</code>,
+                <code>TimeInterval</code>, <code>Timeout</code>, <code>Timestamp</code>, <code>Using</code>
+            </span>
+
         </section>
 
         <section>
@@ -508,32 +499,31 @@
 <script src="lib/js/head.min.js"></script>
 <script src="js/reveal.js"></script>
 
+<!--// @formatter:off-->
 <script>
+// Full list of configuration options available at:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+    controls: true,
+    progress: true,
+    history: true,
+    center: true,
 
-			// Full list of configuration options available at:
-			// https://github.com/hakimel/reveal.js#configuration
-			Reveal.initialize({
-				controls: true,
-				progress: true,
-				history: true,
-				center: true,
+    width: 1024,
 
-				transition: 'slide', // none/fade/slide/convex/concave/zoom
+    transition: 'slide', // none/fade/slide/convex/concave/zoom
 
-				// Optional reveal.js plugins
-				dependencies: [
-					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
-					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-					{ src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
-					{ src: 'plugin/zoom-js/zoom.js', async: true },
-					{ src: 'plugin/notes/notes.js', async: true }
-				]
-			});
-
-
-
+    // Optional reveal.js plugins
+    dependencies: [
+        { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+        { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+        { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+        { src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+        { src: 'plugin/zoom-js/zoom.js', async: true },
+        { src: 'plugin/notes/notes.js', async: true },
+        { src: 'plugin/remotes/remotes.js', async: true },
+    ]
+});
 </script>
-
 </body>
 </html>

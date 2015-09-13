@@ -1,13 +1,16 @@
-
-
 .reveal .white { color: #fff }
-
 .reveal .notransform { text-transform: none }
 
-.wide { width: 1080px !important }
+.operators {
+    text-align: left;
+    padding-left: 1.5em;
+    text-indent:-1.5em;
+    float: left;
+    clear: left;
+}
+.operators strong { font-size: 67% }
+.operators code { font-size: 50% }
 
-.operators dt { font-size: 75% }
-.operators dd {
-    /*display: inline;*/
-    font-size: 50%
- }
+.transparent-background {
+    background-color: rgba(0, 0, 0, .5)
+}
