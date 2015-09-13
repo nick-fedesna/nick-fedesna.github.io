@@ -1,0 +1,13 @@
+
+
+.reveal .white { color: #fff }
+
+.reveal .notransform { text-transform: none }
+
+.wide { width: 1080px !important }
+
+.operators dt { font-size: 75% }
+.operators dd {
+    /*display: inline;*/
+    font-size: 50%
+ }
