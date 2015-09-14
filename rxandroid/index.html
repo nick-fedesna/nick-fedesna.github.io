@@ -20,7 +20,9 @@
     <link rel="stylesheet" href="css/override.css">
 
     <!-- Code syntax highlighting -->
-    <link rel="stylesheet" href="lib/css/zenburn.css">
+    <script src="js/highlight.pack.js"></script>
+    <!--<link rel="stylesheet" href="lib/css/zenburn.css">-->
+    <link rel="stylesheet" href="css/code/solarized_dark.css">
 
     <!-- Printing and PDF exports -->  <!--// @formatter:off-->
     <script>
@@ -53,41 +55,43 @@
 
         <section>
             <section>
-                <h2>Nested Callbacks</h2>
-                <pre>
-                    <!--// @formatter:off-->
-                    <code class="stretch">
-sApi.loginUser(user).enqueue(new Callback&lt;UserToken&gt;() {
-    @Override public void onResponse(Response&lt;UserToken&gt; response) {
-        sApi.getUserInfo(response.body().token).enqueue(new Callback&lt;User&gt;() {
-            @Override public void onResponse(Response&lt;User&gt; response) {
-                // do something with User
-            }
+                <h2>Nested Callbacks, OK and NOT OK</h2>
+                <!--// @formatter:off-->
+                <pre><code class="stretch java">
+    sApi.loginUser(user).enqueue(new Callback&lt;UserToken&gt;() {
+        public void onResponse(Response&lt;UserToken&gt; response) {
+            String token = response.body().token;
+            // save User token
 
-            @Override public void onFailure(Throwable t) {
-                // notify error getting User
-            }
-        });
-    }
+            sApi.getUserInfo(token).enqueue(new Callback&lt;User&gt;() {
+                public void onResponse(Response&lt;User&gt; response) {
+                    // do something with User
+                }
 
-    @Override public void onFailure(Throwable t) {
-        // notify login failure
-    }
-});
-                    </code>
-                    <!--// @formatter:on-->
-                </pre>
+                public void onFailure(Throwable t) {
+                    // notify error getting User
+                }
+            });
+        }
+
+        public void onFailure(Throwable t) {
+            // notify login failure
+        }
+    });
+
+</code></pre><!--// @formatter:on-->
             </section>
         </section>
 
-        <section data-background="img/rube.gif">
-            <div class="transparent-background" style="padding:20px">
+        <section data-background="img/rube.gif" data-background-repeat="repeat" data-background-size="900px">
+            <div class="fragment transparent-background" style="padding:20px">
                 <h2 class="white">Reactive Programming</h2>
 
                 <p class="white">
-                    Offers efficient execution and composition<br/>
-                    by providing a collection of operators capable of <br/>
-                    filtering, selecting, transforming and combining observables.
+                    <span class="fragment">Offers efficient execution and composition<br></span>
+                    <span class="fragment">by providing a collection of operators<br></span>
+                    <span class="fragment">capable of filtering, transforming and combining<br></span>
+                    <span class="fragment">emissions and notifications of observables.</span>
                 </p>
             </div>
         </section>
@@ -98,27 +102,27 @@ sApi.loginUser(user).enqueue(new Callback&lt;UserToken&gt;() {
             </section>
 
             <section>
-                <h2>Push <span class="notransform">v.</span> Pull</h2>
+                <h2>Pull <span class="notransform">v.</span> Push</h2>
                 <table>
                     <tr>
                         <th>event</th>
-                        <th>Observable (push)</th>
                         <th>Iterable (pull)</th>
+                        <th>Observable (push)</th>
                     </tr>
                     <tr>
                         <td>data</td>
-                        <td><code>onNext(T)</code></td>
                         <td><code>T next()</code></td>
+                        <td><code>onNext(T)</code></td>
                     </tr>
                     <tr>
                         <td>error</td>
-                        <td><code>onError(Exception)</code></td>
                         <td>throws <code>Exception</code></td>
+                        <td><code>onError(Exception)</code></td>
                     </tr>
                     <tr>
                         <td>complete</td>
-                        <td><code>onCompleted()</code></td>
                         <td><code>!hasNext()</code></td>
+                        <td><code>onCompleted()</code></td>
                     </tr>
                 </table>
             </section>
