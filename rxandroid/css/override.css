@@ -3,8 +3,8 @@
 
 .operators {
     text-align: left;
-    padding-left: 1.5em;
-    text-indent:-1.5em;
+    /* padding-left: 1.5em; */
+    text-indent:3em;
     float: left;
     clear: left;
 }
@@ -12,5 +12,5 @@
 .operators code { font-size: 50% }
 
 .transparent-background {
-    background-color: rgba(0, 0, 0, .5)
+    background-color: rgba(0, 0, 0, .5);
 }
