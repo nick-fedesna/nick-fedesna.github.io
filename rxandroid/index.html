@@ -61,27 +61,27 @@
                 <h2>Nested Callbacks <span style="font-size:50%">(OK, BUT NOT REALLY OK)</span></h2>
                 <!--// @formatter:off-->
                 <pre><code class="stretch java">
-        sApi.loginUser(user).enqueue(new Callback&lt;UserToken&gt;() {
+    sApi.loginUser(credentials).enqueue(new Callback&lt;UserToken&gt;() {
 
-            public void onResponse(Response&lt;UserToken&gt; response) {
-                String token = response.body().token;
-                // save User token
+        public void onResponse(Response&lt;UserToken&gt; response) {
+            String token = response.body().token;
+            // save User token
 
-                sApi.getUserInfo(token).enqueue(new Callback&lt;User&gt;() {
-                    public void onResponse(Response&lt;User&gt; response) {
-                        // do something with User
-                    }
+            sApi.getUserProfile(token).enqueue(new Callback&lt;UserProfile&gt;() {
+                public void onResponse(Response&lt;UserProfile&gt; response) {
+                    // do something with UserProfile
+                }
 
-                    public void onFailure(Throwable t) {
-                        // notify error getting User
-                    }
-                });
-            }
+                public void onFailure(Throwable t) {
+                    // notify error getting UserProfile
+                }
+            });
+        }
 
-            public void onFailure(Throwable t) {
-                // notify login failure
-            }
-        });
+        public void onFailure(Throwable t) {
+            // notify login failure
+        }
+    });
 
                 </code></pre>
                 <!--// @formatter:on-->
@@ -114,6 +114,10 @@
         <section>
             <section data-background="img/llama.jpg">
                 <h1 class="white">Wait, what's an <br><em>Observable</em>&nbsp ??</h1>
+
+                <aside class="notes">
+                    Observer Pattern + Error/Complete Notifications
+                </aside>
             </section>
 
             <section>
@@ -144,14 +148,59 @@
 
         </section>
 
+        <section data-background="img/love.gif">
+            <section>
+                <div class="transparent-background">
+                    <br>
+
+                    <h2 class="white">I subscribe to all this, so now what?</h2>
+
+                    <div class="fragment white">
+                        <h3><code class="java white">Observer&lt;T&gt;</code></h3>
+                        <table>
+                            <tr>
+                                <td>emissions</td>
+                                <td><code class="java">onNext(T)</code></td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align:middle">notifications</td>
+                                <td><code class="java">onError(Throwable e)</code><br>
+                                    <code class="java">onComplete()</code></td>
+                            </tr>
+                        </table>
+                        <br>
+                    </div>
+                </div>
+
+                <aside class="notes">
+                    Generic Observer interface with three methods<br>
+                    <br>
+                    backwards: subscribe = work, observe = result<br>
+                </aside>
+            </section>
+            <section>
+                <h2 class="white">Subscribe</h2>
+
+                <!--// @formatter:off-->
+            <pre><code class="java">
+        Observable&lt;T&gt;.subscribe(Action1&lt;? super T&gt; onNext,
+                                Action1&lt;Throwable&gt; onError,
+                                Action0 onComplete)
+
+        Observable&lt;T&gt;.subscribe(Observer&lt;? super T&gt; observer)
+            </code></pre>
+            <!--// @formatter:on-->
+            </section>
+        </section>
+
         <section data-background="img/whoa.gif">
             <div class="white">
-            <h3 class="white">Tons of Operators</h3>
+                <h3 class="white">Tons of Operators</h3>
 
             <span class="operators">
                 <strong>Transforming Items</strong>
-                <code>Buffer</code>, <code>FlatMap</code>, <code>GroupBy</code>, <code>Map</code>,
-                <code>Scan</code>, <code>Window</code>
+                 <code>Map</code>, <code>Buffer</code>, <code>FlatMap</code>, <code>GroupBy</code>,
+                 <code>Scan</code>, <code>Window</code>
             </span>
 
             <span class="operators">
@@ -184,44 +233,20 @@
                 <code>TimeInterval</code>, <code>Timeout</code>, <code>Timestamp</code>, <code>Using</code>
             </span>
             </div>
-        </section>
-
-        <section data-background="img/love.gif">
-            <div class="transparent-background">
-                <br>
-
-                <h2 class="white">I subscribe to all this, so now what?</h2>
-
-                <div class="fragment white">
-                    <h3><code class="java white">Observer&lt;T&gt;</code></h3>
-                    <table>
-                        <tr>
-                            <td>emissions</td>
-                            <td><code class="java">onNext(T)</code></td>
-                        </tr>
-                        <tr>
-                            <td style="vertical-align:middle">notifications</td>
-                            <td><code class="java">onError(Throwable e)</code><br>
-                                <code class="java">onComplete()</code></td>
-                        </tr>
-                    </table>
-                    <br>
-                </div>
-            </div>
 
             <aside class="notes">
-                Generic Observer interface with three methods
+                Transforming, Filtering, Composing, Otherwise Changing
             </aside>
         </section>
 
         <section data-background="img/threads.jpg">
             <div class="transparent-background" style="padding:20px">
-            <h2 class="white">Schedulers &amp; Threading</h2>
+                <h2 class="white">Schedulers &amp; Threading</h2>
 
-            <dl class="white">
-                <dt><code>subscribeOn(Scheduler)</code></dt>
-                <dt><code>observeOn(Scheduler)</code></dt>
-            </dl>
+                <dl class="white">
+                    <dt><code>subscribeOn(Scheduler)</code></dt>
+                    <dt><code>observeOn(Scheduler)</code></dt>
+                </dl>
             </div>
         </section>
 
@@ -230,14 +255,67 @@
                      data-background-color="white">
                 <h3 style="color:black">I'm a visual learner, what's all this look like?</h3>
 
+            </section>
+            <section>
+                <h2>Simple Example</h2>
                 <!--// @formatter:off-->
-            <pre class="fragment"><code class="java">
+            <pre><code class="java">
+        Integer[] items = { 0, 1, 2, 3, 4, 5 };
+        Observable.from(items)
+                  .map(i -> (i * i) + i + 1)
+                  .subscribeOn(Schedulers.computation())
+                  .observeOn(AndroidSchedulers.mainThread())
+                  .subscribe(this::itemEmitted,
+                             this::handleError,
+                             () -> Timber.d("Sequence complete"));
+
+        // Output: 1, 3, 7, 13, 21, 31, Sequence complete
+            </code></pre>
+                <!--// @formatter:on-->
+
+                <p><span style="font-size:50%">If you're not using any logging utility,
+                    you should have a look at <a href="https://github.com/JakeWharton/timber">Timber</a>!</span>
+                </p>
+            </section>
+            <section>
+                <h2>Nested Callbacks <span style="font-size:50%">(Remember?)</span></h2>
+                <!--// @formatter:off-->
+                <pre><code class="stretch java">
+    sApi.loginUser(credentials).enqueue(new Callback&lt;UserToken&gt;() {
+
+        public void onResponse(Response&lt;UserToken&gt; response) {
+            String token = response.body().token;
+            // save User token
+
+            sApi.getUserProfile(token).enqueue(new Callback&lt;UserProfile&gt;() {
+                public void onResponse(Response&lt;UserProfile&gt; response) {
+                    // do something with UserProfile
+                }
+
+                public void onFailure(Throwable t) {
+                    // notify error getting UserProfile
+                }
+            });
+        }
+
+        public void onFailure(Throwable t) {
+            // notify login failure
+        }
+    });
+
+                </code></pre>
+                <!--// @formatter:on-->
+            </section>
+            <section>
+                <h2>Rx version:</h2>
+                <!--// @formatter:off-->
+            <pre><code class="java">
         private void loginUser(User user) {
-            sApi.loginUserRx(user)
+            sApi.loginUserRx(credentials)
                 .map(response -> response.token)
                 .doOnNext(this::saveUserToken)
-                .flatMap(sApi::getUserInfoRx)
-                .subscribe(this::userLoggedIn,
+                .flatMap(sApi::getUserProfileRx)
+                .subscribe(this::saveUserProfile,
                            this::handleError);
         }
 
@@ -245,35 +323,6 @@
         private void userLoggedIn(User user) {…}
         private void handleError(Throwable throwable) {…}
             </code></pre>
-                <!--// @formatter:on-->
-            </section>
-            <section>
-                <h2>Nested Callbacks <span style="font-size:50%">(OK, BUT NOT REALLY OK)</span></h2>
-                <!--// @formatter:off-->
-                <pre><code class="stretch java">
-        sApi.loginUser(user).enqueue(new Callback&lt;UserToken&gt;() {
-
-            public void onResponse(Response&lt;UserToken&gt; response) {
-                String token = response.body().token;
-                // save User token
-
-                sApi.getUserInfo(token).enqueue(new Callback&lt;User&gt;() {
-                    public void onResponse(Response&lt;User&gt; response) {
-                        // do something with User
-                    }
-
-                    public void onFailure(Throwable t) {
-                        // notify error getting User
-                    }
-                });
-            }
-
-            public void onFailure(Throwable t) {
-                // notify login failure
-            }
-        });
-
-                </code></pre>
                 <!--// @formatter:on-->
             </section>
         </section>
@@ -305,8 +354,6 @@
 
             <aside class="notes">
                 Subscribing/Observing on/off UI Thread<br>
-                <br>
-                backwards: subscribe = work, observe = result<br>
                 <br>
                 RxJava wiki is goldmine<br>
                 ReactiveX.io also good to have bookmarked
@@ -383,7 +430,7 @@
         </section>
 
         <section>
-            <h2>Log-in validation</h2>
+            <h2>Example: Log-in validation</h2>
             <!--// @formatter:off-->
                 <pre><code class="java">
     Observable&lt;Boolean&gt; emailValid = RxTextView.textChanges(email)
@@ -398,14 +445,20 @@
             .subscribe(signIn::setEnabled);
                 </code></pre>
                 <!--// @formatter:on-->
+            <p style="font-size:67%">The code highlighting plugin doesn't do this justice<br>
+                so check out this and more example code here:<br>
+                <a href="https://github.com/nick-fedesna/RxAndroidExample">
+                    github.com/nick-fedesna/RxAndroidExample</a>
+            </p>
         </section>
 
         <section>
             <br>
+
             <h2 class="notransform">RxAndroid</h2>
+
             <p>by Nick Fedesna</p>
             <br>
-            <p><a href="https://github.com/nick-fedesna/RxAndroidExample">Example Source Code</a></p>
             <img src="img/alex.jpg" width="200px">
         </section>
     </div>
@@ -436,7 +489,7 @@ Reveal.initialize({
         { src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
         { src: 'plugin/zoom-js/zoom.js', async: true },
         { src: 'plugin/notes/notes.js', async: true },
-        { src: 'plugin/remotes/remotes.js', async: true },
+        //{ src: 'plugin/remotes/remotes.js', async: true },
     ]
 });
 
