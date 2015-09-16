@@ -1,4 +1,4 @@
-.reveal .white { color: #fff }
+.reveal .white { color: #eee }
 .reveal .notransform { text-transform: none }
 
 .operators {
@@ -12,5 +12,5 @@
 .operators code { font-size: 50% }
 
 .transparent-background {
-    background-color: rgba(0, 0, 0, .5);
+    background-color: rgba(64, 64, 64, .8);
 }
