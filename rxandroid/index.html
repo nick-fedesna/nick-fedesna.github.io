@@ -84,12 +84,16 @@
                 </code></pre>
                 <!--// @formatter:on-->
             </section>
+            <section>
+                <h2>Nested Futures <span style="font-size:50%">(OMG, please no!)</span></h2>
+                <img src="img/nooo.gif" />
+            </section>
         </section>
 
         <section data-background="img/rube.gif" data-background-repeat="repeat"
                  data-background-size="900px">
             <section>
-                <div class="fragment transparent-background" style="padding:20px">
+                <div class="transparent-background" style="padding:20px">
                     <h2 class="white">Enter: ReactiveX</h2>
 
                     <p class="white">Offering efficient execution and composition<br>
@@ -158,7 +162,7 @@
         </section>
 
         <section>
-            <h3>Just A Few Operators</h3>
+            <h3>Tons of Operators</h3>
 
             <span class="operators">
                 <strong>Transforming Items</strong>
@@ -197,10 +201,12 @@
             </span>
         </section>
 
-        <section>
-            <h2>I subscribe to all this, so what now?</h2>
-                <div class="fragment">
-                <h3><code class="java">Observer&lt;T&gt;</code></h3>
+        <section data-background="img/love.gif">
+            <div class="transparent-background">
+            <h2 class="white">I subscribe to all this, so now what?</h2>
+
+            <div class="fragment white">
+                <h3><code class="java white">Observer&lt;T&gt;</code></h3>
                 <table class="fragment">
                     <tr>
                         <td>emissions</td>
@@ -212,13 +218,16 @@
                             <code class="java">onComplete()</code></td>
                     </tr>
                 </table>
-                </div>
+            </div>
+            </div>
         </section>
-        <section>
-            <h3>I'm a visual learner, what's all this look like?</h3>
+
+        <section data-background="img/bear.gif" data-background-size="400px"
+                 data-background-color="white">
+            <h3 style="color:black">I'm a visual learner, what's all this look like?</h3>
 
             <!--// @formatter:off-->
-            <pre><code class="java">
+            <pre class="fragment"><code class="java">
         private void loginUser(User user) {
             sApi.loginUserRx(user)
                 .map(response -> response.token)
@@ -260,14 +269,104 @@
         </section>
 
         <section>
-            <h2>RxAndroid</h2>
+            <h2 class="notransform"><a href="https://github.com/ReactiveX/RxAndroid">RxAndroid</a>
+            </h2>
 
-            <p>Gives us some <code>Schedulers</code></p>
+            <p><code class="gradle">compile 'io.reactivex:rxandroid:1.0.1'</code></p>
+            <br>
             <ul>
                 <li><code class="java">AndroidSchedulers.mainThread()</code></li>
                 <li><code class="java">HandlerScheduler.from(handler)</code></li>
             </ul>
         </section>
+
+        <section>
+            <h2 class="notransform"><a href="https://github.com/ReactiveX/RxJava">RxJava</a></h2>
+
+            <p><code class="gradle">compile 'io.reactivex:rxjava:1.0.14'</code><br><br>
+                <span style="font-size:67%">Best to include so you have latest RxJava because RxAndroid releases will be rare.</span>
+            </p>
+        </section>
+
+        <section>
+            <h2><a class="notransform" href="https://github.com/trello/RxLifecycle">RxLifecycle</a>
+            </h2>
+
+            <p>Un-subscription helpers / variety of base classes</p>
+
+            <p><code class="gradle" style="font-size:67%">compile
+                'com.trello:rxlifecycle:0.2.0'</code>
+                <br>
+            <ul style="font-size:50%">
+                <li><code class="java">RxLifecycle.bindUntilActivityEvent(lifecycle,
+                    ActivityEvent.DESTROY)</code></li>
+                <li><code class="java">RxLifecycle.bindUntilFragmentEvent(lifecycle,
+                    FragmentEvent.DETACH)</code></li>
+                <li><code class="java">RxLifecycle.bindActivity(lifecycle)</code></li>
+                <li><code class="java">RxLifecycle.bindFragment(lifecycle)</code></li>
+                <li><code class="java">RxLifecycle.bindView(view)</code></li>
+            </ul>
+            </p>
+
+            <p><code class="gradle" style="font-size:67%">compile
+                'com.trello:rxlifecycle-components:0.2.0'</code>
+                <br>
+            <ul style="font-size:50%">
+                <li><code class="java">RxActivity.bindUntilEvent(event)</code></li>
+                <li><code class="java">RxActivity.bindToLifecycle()</code></li>
+                <li><code class="java">RxActivity.lifecycle()</code></li>
+            </ul>
+            <br><code class="java" style="font-size:33%">(RxFragment, RxDialogFragment,
+            support/RxFragment, support/RxDialogFragment,
+            support/RxFragmentActivity, support/RxAppCompatActivity)</code>
+            </p>
+        </section>
+
+        <section>
+            <h2><a class="notransform" href="https://github.com/JakeWharton/RxBinding">RxBinding</a>
+            </h2>
+
+            <p>RxJava bindings for Android UI widgets</p>
+
+            <p><code class="gradle" style="font-size:67%">compile
+                'com.jakewharton.rxbinding:rxbinding:0.2.0'</code>
+                <br><code class="java" style="font-size:50%">(rxbinding-support-v4,
+                    rxbinding-appcompat-v7,
+                    rxbinding-design, rxbinding-recyclerview-v7)</code>
+                <br>
+            <table>
+                <tr>
+                    <td>
+                        <ul style="font-size:50%">
+                            <li><code class="java">RxView</code></li>
+                            <li><code class="java">RxAdapter</code></li>
+                            <li><code class="java">RxCompoundButton</code></li>
+                            <li><code class="java">RxRadioGroup</code></li>
+                            <li><code class="java">RxSearchView</code></li>
+                            <li><code class="java">RxToolbar</code></li>
+                            <li><code class="java">RxSwipeRefreshLayout</code></li>
+                            <li><code class="java">RxNavigationView</code></li>
+                            <li><code class="java">RxRecyclerView</code></li>
+                        </ul>
+                    </td>
+                    <td style="vertical-align:top">
+                        <ul style="font-size:50%">
+                            <li><code class="java">RxViewGroup</code></li>
+                            <li><code class="java">RxAdapterView</code></li>
+                            <li><code class="java">RxProgressBar</code></li>
+                            <li><code class="java">RxRatingBar</code></li>
+                            <li><code class="java">RxSeekBar</code></li>
+                            <li><code class="java">RxTextView</code></li>
+                            <li><code class="java">RxDrawerLayout</code></li>
+                            <li><code class="java">RxTabLayout</code></li>
+                            <li><code class="java">RxSnackbar</code></li>
+                        </ul>
+                    </td>
+                </tr>
+            </table>
+            </p>
+        </section>
+
     </div>
 </div>
 
