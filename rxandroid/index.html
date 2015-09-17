@@ -440,7 +440,7 @@
     Observable&lt;Boolean&gt; pwd2Valid = RxTextView.textChanges(pwd2)
             .map(text -&gt; TextUtils.equals(text, pwd1.getText()));
 
-    Observable.combineLatest(emailInvalid, pwd1Valid, pwd2Valid
+    Observable.combineLatest(emailValid, pwd1Valid, pwd2Valid
                              (email, pwd1, pwd2) -> email && pwd1 && pwd2)
             .subscribe(signIn::setEnabled);
                 </code></pre>
