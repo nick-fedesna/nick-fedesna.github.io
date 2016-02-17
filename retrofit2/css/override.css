@@ -1,0 +1,16 @@
+.reveal .white { color: #eee }
+.reveal .notransform { text-transform: none }
+
+.operators {
+    text-align: left;
+    /* padding-left: 1.5em; */
+    text-indent:3em;
+    float: left;
+    clear: left;
+}
+.operators strong { font-size: 67% }
+.operators code { font-size: 50% }
+
+.transparent-background {
+    background-color: rgba(64, 64, 64, .8);
+}
